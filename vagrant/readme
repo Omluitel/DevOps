@@ -3,7 +3,7 @@ Vagrant is a tool for managing and provisioning virtualized development environm
 Here are some useful Vagrant commands:
 
 vagrant init: Initializes a new Vagrant project in the current directory, creating a Vagrantfile that you can configure for your VM.
-Example: vagrant init ubuntu/bionic64
+Example: vagrant init ubuntu/bionic64 #Boxes Source: https://app.vagrantup.com/boxes/search?page=2&provider=&q=ubuntu&sort=updated&utf8=%E2%9C%93
 
 vagrant up: Creates and starts the virtual machine(s) defined in the Vagrantfile. If the VM doesn't exist, it will be created. If it's already
 Example: vagrant up
