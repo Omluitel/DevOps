@@ -1,67 +1,62 @@
-# Docker and Containerization
+# Vagrant Configuration for WordPress Development
 
-## What is Docker?
+This code is a setup for using Vagrant to create a virtual environment tailored for developing WordPress websites. It takes care of configuring a virtual machine with the necessary tools.
 
-Imagine Docker as a magical box that lets you build, ship, and run your computer programs in a special way. This special way is called a "container." These containers package your program along with everything it needs to work, like tools, parts, and instructions.
+## Getting Started
 
-## Problem Docker Solves
+To use this setup, make sure you have [Vagrant](https://www.vagrantup.com/) and [VirtualBox](https://www.virtualbox.org/) installed on your computer.
 
-Before Docker, computer programs were like picky eaters. They needed their own special plates and settings to work correctly. When we moved programs from our computers to other places like servers, they often got cranky because the surroundings were different. Docker fixes this problem. It gives each program its own little world (container) to live in. This way, no matter where the program goes, it's always happy in its own cozy space.
+1. Clone or download this repository to your local machine.
 
-## Software Development Before and After Docker
+2. Open a terminal and navigate to the directory containing the downloaded files.
 
-Before Docker, making programs work on different computers was a big puzzle. Sometimes a program would work on one computer but not on another because they were set up differently. Docker helps by making sure each program has the same setup wherever it goes. It's like having a recipe that you can use anywhere, and it helps us avoid cooking disasters.
+3. Run the following command to start the virtual machine:
+   
 
-## What is Docker and Why Use It?
+4. Once the setup is complete, you can access your WordPress development environment.
 
-Docker is like a superhero for developers. It takes your program and wraps it up in a container, making sure it has everything it needs to run smoothly. This container idea makes it easier to share programs with others. You can send a container to your friend, and they can run it on their computer without any trouble. It's like sending them a fully-equipped playground for your program to play in.
+## Configuration Details
 
-## Docker vs. Virtual Machine (VM)
+### Base Box
+The virtual machine is based on the "ubuntu/focal64" box, which provides an Ubuntu 20.04 environment.
 
-Virtual Machines are like having separate playgrounds for each program, but they're a bit heavy. Docker's containers are like tiny playhouses that share the same playground. This makes them faster and uses less space. So, if you have many containers, it's like having a playground full of fun, lightweight playhouses.
+### Network Settings
+The virtual machine is set to use a public network connection so you can access it from other devices on your network.
 
-## Installing Docker Locally
+### Folder Sync
+There's a line that's commented out (prefixed with `#`). You can uncomment and modify this line to sync a local folder with a folder inside the virtual machine. This can be handy for sharing files between your computer and the virtual machine.
 
-To get your own Docker magic box:
+### Provider-Specific Settings (VirtualBox)
+You can customize settings for VirtualBox, the virtualization software being used. There are options to enable the GUI interface (`vb.gui = true`) and adjust memory (`vb.memory = "1024"`).
 
-- Visit the [Docker website](https://www.docker.com/) and follow their instructions for your computer.
-- Once it's done, you can use the word "docker" in your computer's magic shell (terminal) to do Docker things.
+### Provisioning with Shell Commands
+The script sets up the virtual machine with required software and configurations:
 
-## Images vs. Containers
+- Installs software like Apache, PHP, MySQL, and various PHP extensions.
+- Creates directories and sets permissions.
+- Downloads and configures WordPress.
+- Configures Apache web server.
+- Sets up MySQL database and user.
+- Configures WordPress settings.
 
-Think of an **image** like a blueprint for your container. It's a recipe for creating your playhouse. A **container** is like a real playhouse made from the blueprint. It's where your program lives and plays.
+## Usage
 
-## Public vs. Private Registries
+You can modify the shell commands within the `config.vm.provision` block to match your specific needs. These commands are executed automatically during the setup process.
 
-Imagine if you could share your playhouses with your friends. A **public registry** is like a big playground where everyone can share and play with each other's containers. A **private registry** is like your secret treehouse, where only you and your trusted pals can play.
+## Important Notes
 
-Remember, Docker is all about making your programs happy, cozy, and easy to share. It's like giving them their own magical world to live in.
+- Keep in mind that this setup is for development purposes and might not be suitable for production environments.
+- Make sure to secure your MySQL user credentials and database settings.
+- Always refer to the official documentation for [Vagrant](https://www.vagrantup.com/) and [VirtualBox](https://www.virtualbox.org/) for more details.
+
+Feel free to adapt this setup to your requirements and happy WordPress development!
 
 
-# Docker commands
+## Manual WordPress Installation Guide
 
-## Basic commands
+If you prefer a manual approach for setting up WordPress, you can follow the detailed instructions provided in the [Ubuntu tutorial](https://ubuntu.com/tutorials/install-and-configure-wordpress#1-overview). The tutorial covers each step of the process, from installing the necessary software to configuring your WordPress site.
 
-* `docker ps`: List all running containers.
-* `docker images`: List all images.
-* `docker run`: Run a container from an image.
-* `docker stop`: Stop a running container.
-* `docker start`: Start a stopped container.
-* `docker remove`: Remove a stopped container.
+**[Follow the Manual WordPress Installation Tutorial](https://ubuntu.com/tutorials/install-and-configure-wordpress#1-overview)**
 
-## Advanced commands
-
-* `docker build`: Build an image from a Dockerfile.
-* `docker push`: Push an image to a registry.
-* `docker pull`: Pull an image from a registry.
-* `docker tag`: Tag an image.
-* `docker inspect`: Get information about a container or image.
-* `docker network`: Manage Docker networks.
-* `docker volume`: Manage Docker volumes.
-
-## Useful links
-
-* [Docker documentation](https://docs.docker.com/)
-* [Docker CLI reference](https://docs.docker.com/engine/reference/commandline/cli/)
-* [Docker cheat sheet](https://cheatography.com/adambard/cheat-sheets/docker/)
+This tutorial will walk you through setting up the LAMP stack, creating a MySQL database and user for WordPress, downloading and configuring the WordPress files, setting up the Apache configuration, and completing the WordPress installation.
 
