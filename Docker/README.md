@@ -36,3 +36,32 @@ Think of an **image** like a blueprint for your container. It's a recipe for cre
 Imagine if you could share your playhouses with your friends. A **public registry** is like a big playground where everyone can share and play with each other's containers. A **private registry** is like your secret treehouse, where only you and your trusted pals can play.
 
 Remember, Docker is all about making your programs happy, cozy, and easy to share. It's like giving them their own magical world to live in.
+
+
+# Docker commands
+
+## Basic commands
+
+* `docker ps`: List all running containers.
+* `docker images`: List all images.
+* `docker run`: Run a container from an image.
+* `docker stop`: Stop a running container.
+* `docker start`: Start a stopped container.
+* `docker remove`: Remove a stopped container.
+
+## Advanced commands
+
+* `docker build`: Build an image from a Dockerfile.
+* `docker push`: Push an image to a registry.
+* `docker pull`: Pull an image from a registry.
+* `docker tag`: Tag an image.
+* `docker inspect`: Get information about a container or image.
+* `docker network`: Manage Docker networks.
+* `docker volume`: Manage Docker volumes.
+
+## Useful links
+
+* [Docker documentation](https://docs.docker.com/)
+* [Docker CLI reference](https://docs.docker.com/engine/reference/commandline/cli/)
+* [Docker cheat sheet](https://cheatography.com/adambard/cheat-sheets/docker/)
+
