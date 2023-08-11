@@ -1,0 +1,68 @@
+# Vagrant Configuration for WordPress Development
+
+# Configure Vagrant
+Vagrant.configure("2") do |config|
+    # Specify the base box
+    config.vm.box = "ubuntu/focal64"
+  
+    # Configure network settings
+    config.vm.network "public_network"
+    
+    # Sync local and VM folders
+    #config.vm.synced_folder "../wordpress", "opt/vagrant"
+  
+    # Provider-specific settings (VirtualBox)
+    config.vm.provider "virtualbox" do |vb|
+      # Uncomment and customize these settings as needed
+      # vb.gui = true
+      # vb.memory = "1024"
+    end
+  
+    # Provisioning with shell commands
+    config.vm.provision "shell", inline: <<-SHELL
+      # Update and install required packages
+      sudo apt update
+      sudo apt install apache2 \
+                      ghostscript \
+                      libapache2-mod-php \
+                      mysql-server \
+                      php \
+                      php-bcmath \
+                      php-curl \
+                      php-imagick \
+                      php-intl \
+                      php-json \
+                      php-mbstring \
+                      php-mysql \
+                      php-xml \
+                      php-zip -y
+      
+      # Set up directories and permissions
+      sudo mkdir -p /srv/www
+      sudo chown www-data: /srv/www
+      
+      # Download and configure WordPress
+      curl https://wordpress.org/latest.tar.gz | sudo -u www-data tar zx -C /srv/www
+      cp /vagrant/wordpress.conf /etc/apache2/sites-available/wordpress.conf
+      
+      # Configure Apache
+      sudo a2ensite wordpress
+      sudo a2enmod rewrite
+      sudo a2dissite 000-default
+      sudo service apache2 reload
+      
+      # Set up MySQL
+      mysql -u root -e 'CREATE DATABASE wordpress;'
+      mysql -u root -e 'CREATE USER wordpress@localhost IDENTIFIED BY "admin123";'
+      mysql -u root -e 'GRANT SELECT,INSERT,UPDATE,DELETE,CREATE,DROP,ALTER ON wordpress.* TO wordpress@localhost;'
+      mysql -u root -e 'FLUSH PRIVILEGES;'
+      sudo service mysql start
+      
+      # Configure WordPress settings
+      sudo -u www-data cp /srv/www/wordpress/wp-config-sample.php /srv/www/wordpress/wp-config.php
+      sudo -u www-data sed -i 's/database_name_here/wordpress/' /srv/www/wordpress/wp-config.php
+      sudo -u www-data sed -i 's/username_here/wordpress/' /srv/www/wordpress/wp-config.php
+      sudo -u www-data sed -i 's/password_here/admin123/' /srv/www/wordpress/wp-config.php
+    SHELL
+  end
+  
