@@ -1,0 +1,31 @@
+# Define Vagrant configuration version
+Vagrant.configure("2") do |config|
+
+    # Provisioning the 'Ubuntu' virtual machine
+    config.vm.define "Ubuntu" do |web|
+      web.vm.box = "ubuntu/focal64"  # Set the base box for the VM
+      web.vm.network "public_network"  # Configure a public network
+      web.vm.provider "virtualbox" do |vb|  # Configure VirtualBox provider settings
+        vb.memory = "1024"  # Set VM memory to 1024 MB
+        vb.cpus = 2  # Allocate 2 CPUs to the VM
+      end
+  
+      # Additional provisioning steps for the 'Ubuntu' VM can be added here
+  
+    end
+    
+    # Provisioning the 'Centos' virtual machine
+    config.vm.define "Centos" do |db|
+      db.vm.box = "generic/centos8"  # Set the base box for the VM
+      db.vm.network "public_network"  # Configure a public network
+      db.vm.provider "virtualbox" do |vb|  # Configure VirtualBox provider settings
+        vb.memory = "1024"  # Set VM memory to 1024 MB
+        vb.cpus = 1  # Allocate 1 CPU to the VM
+      end
+      
+      # Additional provisioning steps for the 'Centos' VM can be added here
+      
+    end
+  
+  end
+  
