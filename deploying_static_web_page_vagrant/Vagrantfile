@@ -1,0 +1,45 @@
+# This Vagrant configuration is written in Ruby mode.
+# It sets up a Vagrant environment with various settings and provisions using a shell script.
+
+Vagrant.configure("2") do |config|
+    # Specify the VM box to use for the Vagrant environment.
+    config.vm.box = "generic/centos8"
+    
+    # Configure a public network for the VM.
+    config.vm.network "public_network"
+    
+    # Define VirtualBox-specific settings.
+    config.vm.provider "virtualbox" do |vb|
+      # Uncomment the next line to enable GUI mode for the VM.
+      # vb.gui = true
+    
+      # Customize the VM's memory by setting its value.
+      # vb.memory = "1024"
+    end
+    
+    # Provision the VM using a shell script.
+    config.vm.provision "shell", inline: <<-SHELL
+      # Install required packages using yum.
+      yum install httpd wget unzip -y
+    
+      # Start the Apache HTTP server and enable it to start on boot.
+      systemctl start httpd
+      systemctl enable httpd
+    
+      # Change to the /tmp/ directory and download a ZIP template.
+      cd /tmp/
+      wget https://www.tooplate.com/zip-templates/2079_garage.zip
+    
+      # Unzip the downloaded ZIP file and copy its contents to the Apache web root.
+      unzip -o 2079_garage.zip
+      cp -r 2079_garage/* /var/www/html/
+    
+      # Restart the Apache HTTP server to apply the changes.
+      systemctl restart httpd
+    
+      # Configure firewall rules to allow HTTP traffic.
+      firewall-cmd --add-service=http --permanent
+      firewall-cmd --reload
+    SHELL
+  end
+  
