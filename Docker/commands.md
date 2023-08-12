@@ -1,67 +1,119 @@
-# Docker and Containerization
+## Docker Commands Step-by-Step
 
-## What is Docker?
+#### Pull an Image from Docker Hub:
+```
+docker pull IMAGE_NAME:TAG
+```
 
-Imagine Docker as a magical box that lets you build, ship, and run your computer programs in a special way. This special way is called a "container." These containers package your program along with everything it needs to work, like tools, parts, and instructions.
+For example, to pull the latest version of the official Ubuntu image, you would use:
 
-## Problem Docker Solves
+```
+docker pull ubuntu
+```
+To pull a specific version of the Ubuntu image, you could use:
+```
+docker pull ubuntu:20.04
+```
+After you enter the docker pull command, Docker will start downloading the specified image from Docker Hub. The image is downloaded as layers, which are then extracted on your local system. The time taken depends on your internet speed and the image size.
+##
 
-Before Docker, computer programs were like picky eaters. They needed their own special plates and settings to work correctly. When we moved programs from our computers to other places like servers, they often got cranky because the surroundings were different. Docker fixes this problem. It gives each program its own little world (container) to live in. This way, no matter where the program goes, it's always happy in its own cozy space.
+#### Viewing Pulled Images:
+To view the images you've pulled, you can use the docker images command. This command will display a list of locally available images, including their names, tags, sizes, and creation dates.
+```
+docker images
+```
+##
+#### Run a Container from an Image:
 
-## Software Development Before and After Docker
+```
+docker run -d --name CONTAINER_NAME IMAGE_NAME:TAG
+```
 
-Before Docker, making programs work on different computers was a big puzzle. Sometimes a program would work on one computer but not on another because they were set up differently. Docker helps by making sure each program has the same setup wherever it goes. It's like having a recipe that you can use anywhere, and it helps us avoid cooking disasters.
+##### docker run: 
+Start a new container.
 
-## What is Docker and Why Use It?
+##### -d: 
+Run the container in the background. This allows you to use your terminal for other tasks without interruption.
 
-Docker is like a superhero for developers. It takes your program and wraps it up in a container, making sure it has everything it needs to run smoothly. This container idea makes it easier to share programs with others. You can send a container to your friend, and they can run it on their computer without any trouble. It's like sending them a fully-equipped playground for your program to play in.
+##### --name CONTAINER_NAME: 
+Give a name to the container for easy management, especially when dealing with multiple containers.
 
-## Docker vs. Virtual Machine (VM)
+##### IMAGE_NAME:TAG: 
+Specify the Docker image you want to use. Replace IMAGE_NAME with the image's name and TAG with its version or label. If you don't specify a tag, Docker assumes the latest version.
+##
+#### List Running Containers:
+```
+docker ps
+```
+#### List All Containers (including stopped):
+```
+docker ps -a
+```
 
-Virtual Machines are like having separate playgrounds for each program, but they're a bit heavy. Docker's containers are like tiny playhouses that share the same playground. This makes them faster and uses less space. So, if you have many containers, it's like having a playground full of fun, lightweight playhouses.
-
-## Installing Docker Locally
-
-To get your own Docker magic box:
-
-- Visit the [Docker website](https://www.docker.com/) and follow their instructions for your computer.
-- Once it's done, you can use the word "docker" in your computer's magic shell (terminal) to do Docker things.
-
-## Images vs. Containers
-
-Think of an **image** like a blueprint for your container. It's a recipe for creating your playhouse. A **container** is like a real playhouse made from the blueprint. It's where your program lives and plays.
-
-## Public vs. Private Registries
-
-Imagine if you could share your playhouses with your friends. A **public registry** is like a big playground where everyone can share and play with each other's containers. A **private registry** is like your secret treehouse, where only you and your trusted pals can play.
-
-Remember, Docker is all about making your programs happy, cozy, and easy to share. It's like giving them their own magical world to live in.
+#### Stop a Container:
+```
+docker stop container_name_or_id
+```
+#### Start a Stopped Container:
+```
+docker start container_name_or_id
+```
+#### Restart a Container:
+```
+docker restart container_name_or_id
+```
 
 
-# Docker commands
+#### Attach to a Running Container's Shell:
+ ```
+ docker exec -it container_name_or_id /bin/bash
+ ```
 
-## Basic commands
+#### View Container Logs:
+ ```
+ docker logs container_name_or_id
+ ```
 
-* `docker ps`: List all running containers.
-* `docker images`: List all images.
-* `docker run`: Run a container from an image.
-* `docker stop`: Stop a running container.
-* `docker start`: Start a stopped container.
-* `docker remove`: Remove a stopped container.
+#### Remove a Container:
+ ```
+ docker rm container_name_or_id
+ ```
 
-## Advanced commands
+#### Remove an Image:
+ ```
+ docker rmi image_name:tag
+ ```
 
-* `docker build`: Build an image from a Dockerfile.
-* `docker push`: Push an image to a registry.
-* `docker pull`: Pull an image from a registry.
-* `docker tag`: Tag an image.
-* `docker inspect`: Get information about a container or image.
-* `docker network`: Manage Docker networks.
-* `docker volume`: Manage Docker volumes.
+## Building and Networks
 
-## Useful links
+#### Build a Docker Image from a Dockerfile:
+ ```
+ docker build -t image_name:tag path_to_dockerfile_directory
+ ```
 
-* [Docker documentation](https://docs.docker.com/)
-* [Docker CLI reference](https://docs.docker.com/engine/reference/commandline/cli/)
-* [Docker cheat sheet](https://cheatography.com/adambard/cheat-sheets/docker/)
+#### Create a Docker Network:
+ ```
+ docker network create network_name
+ ```
+
+#### Run a Container with a Specific Network:
+ ```
+ docker run -d --name container_name --network network_name image_name:tag
+ ```
+
+## Inspecting and Cleaning Up
+
+#### Inspect Container or Image:
+ ```
+ docker inspect container_or_image_name_or_id
+ ```
+
+#### Clean Up (Remove All Stopped Containers, Unused Networks, and Dangling Images):
+ ```
+ docker system prune
+ ```
+
+
+
+
 
