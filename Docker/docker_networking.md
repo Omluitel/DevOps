@@ -1,3 +1,52 @@
+## Docker Networking
+
+Docker networking involves three major components:
+
+1. **Container Network Model (CNM):**
+   CNM defines the fundamental building blocks of Docker networks.
+
+2. **Libnetwork:**
+   Libnetwork is the real-world implementation of CNM. Docker uses it for connecting containers. Libnetwork is responsible for service discovery, ingress-based container load balancing, and network and management control plane functionality.
+
+3. **Drivers:**
+   Drivers extend the network model by implementing specific network topologies.
+
+### Network Drivers -- see on table for detailed explanation
+
+| Driver  | Description |
+|---------|-------------|
+| bridge  | Default network that forwards traffic between segments. |
+| host    | Removes network isolation between container and host. |
+| overlay | Connects containers across multiple hosts (swarm mode). |
+| macvlan | Assigns a MAC address, making containers appear as physical devices on the network. |
+| none    | Disables networking; used in conjunction with a custom network driver. |
+| ...     | Custom network drivers (user-defined network types). |
+
+### Common Network Commands
+
+| Command                                 | Description                           |
+|-----------------------------------------|---------------------------------------|
+| `docker network ls`                     | List all networks.                    |
+| `docker network inspect <NAME>`         | Get detailed info on a network.       |
+| `docker network create <NAME>`          | Create a new network.                 |
+| `docker network rm <NAME>`              | Remove a network.                     |
+| `docker network connect <NET> <CONT>`   | Add a container to a network.         |
+| `docker network disconnect <NET> <CONT>`| Remove a container from a network.    |
+| `docker network prune`                  | Remove all unused networks.           |
+
+### Example
+
+docker container run -d --name network-test -p 8081:80 nginx
+docker network create br01
+docker network connect br01 network-test
+docker network inspect network-test
+docker network disconnect br01 network-test
+
+
+
+
+
+
 | Networking Type   | Description                                      | How to Create                                    | How It Works                                                                                                 |
 |-------------------|--------------------------------------------------|-------------------------------------------------|--------------------------------------------------------------------------------------------------------------|
 | Bridge Network    | Default network created by Docker.              | `docker network create my_bridge`             | Containers in the same bridge network can communicate using IP addresses.                                   |
