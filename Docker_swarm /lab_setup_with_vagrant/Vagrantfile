@@ -1,0 +1,52 @@
+#Vagrantfile for Docker Swarm Cluster with 3 Managers and 5 Workers
+
+# Define the number of manager and worker nodes
+MANAGERS = 2
+WORKERS = 5
+
+# Define memory for VMs (in MB)
+MEMORY = 2048  # 2 GB
+
+# Common setup
+Vagrant.configure("2") do |config|
+  config.vm.box = "ubuntu/focal64"  # Ubuntu 20.04 base box
+
+  config.vm.provider "virtualbox" do |vb|
+    vb.memory = MEMORY
+  end
+
+  # Define a shell provisioner for Docker installation
+  docker_install_script = <<-DOCKER_INSTALL
+    # Install Docker
+    curl -fsSL https://get.docker.com -o get-docker.sh
+    sudo sh get-docker.sh
+    sudo usermod -aG docker vagrant
+  DOCKER_INSTALL
+
+  # Create manager nodes
+  (1..MANAGERS).each do |i|
+    config.vm.define "manager0#{i}" do |manager|
+      manager.vm.network "private_network", type: "dhcp"
+      manager.vm.hostname = "manager0#{i}"
+      manager.vm.provider "virtualbox" do |vb|
+        vb.memory = MEMORY
+      end
+
+      # Provision Docker on manager nodes
+      manager.vm.provision "shell", inline: docker_install_script
+    end
+  end
+
+  # Create worker nodes
+  (1..WORKERS).each do |i|
+    config.vm.define "worker0#{i}" do |worker|
+      worker.vm.network "private_network", type: "dhcp"
+      worker.vm.hostname = "worker0#{i}"
+      worker.vm.provider "virtualbox" do |vb|
+        vb.memory = MEMORY
+      end
+      # Provision Docker on worker nodes
+      worker.vm.provision "shell", inline: docker_install_script
+    end
+  end
+end
