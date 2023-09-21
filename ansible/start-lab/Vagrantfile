@@ -1,0 +1,62 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure("2") do |config|
+  # Define VMs with static private IP addresses, vcpu, memory, and vagrant-box.
+  boxes = [
+    {
+      name: "web1.demo.com",
+      box: "ubuntu/jammy64",  # Add a comma here
+      ram: 2024,
+      vcpu: 1,
+      ip: "192.168.56.15"
+    },
+    {
+      name: "web2.demo.com",
+      box: "ubuntu/jammy64",
+      ram: 2024,
+      vcpu: 1,
+      ip: "192.168.56.16"
+    },
+    {
+      name: "ansible-host",
+      box: "ubuntu/jammy64",
+      ram: 4096,
+      vcpu: 1,
+      ip: "192.168.56.17"
+    },
+    {
+      name: "web3.demo.com",
+      box: "generic/centos8",
+      ram: 2024,
+      vcpu: 1,
+      ip: "192.168.56.18"
+    }
+  ]
+
+  # Provision each of the VMs.
+  boxes.each do |opts|
+    config.vm.define opts[:name] do |box_config|
+      box_config.vm.synced_folder ".", "/opt/vagrant", id: "vagrant-root", disabled: true
+      box_config.ssh.insert_key = false
+      box_config.vm.box = opts[:box]
+      box_config.vm.hostname = opts[:name]
+
+      box_config.vm.provider :virtualbox do |vb|
+        vb.memory = opts[:ram]
+        vb.cpus = opts[:vcpu]
+      end
+
+      box_config.vm.network :private_network, ip: opts[:ip]
+
+      # Provision files and run bootstrap.sh
+      box_config.vm.provision :file do |file|
+        file.source = 'key_gen.sh'
+        file.destination = '/home/vagrant/'
+      end
+
+      box_config.vm.provision "shell", path: "bootstrap.sh"
+    end
+  end
+end
+
