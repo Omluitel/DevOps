@@ -1,31 +1,48 @@
 ---
+# The '---' indicates the start of a new YAML document.
+
 - name: Setup WebServer
+  # 'name' is a human-readable label for this play.
   hosts: websrvgrp
+  # 'hosts' specifies the target hosts or host group for this play.
+  # In this case, it targets the 'websrvgrp' group of hosts.
   become: yes
+  # 'become: yes' enables privilege escalation, allowing Ansible to
+  # become a privileged user (usually, 'root') on the target hosts.
+
   tasks:
+    # 'tasks' is a list of tasks to be executed as part of this play.
+
     - name: Install Apache2
+      # 'name' is a human-readable label for this task.
       apt:
+        # 'apt' is a module used to manage packages on Debian-based systems.
         name: apache2
+        # 'name' specifies the package to be installed, which is 'apache2'.
         state: present
+        # 'state: present' ensures that the package is present (installed).
+
     - name: Start & Enable apache2
+      # Another task to start and enable the Apache2 service.
       service:
+        # 'service' is a module used to manage services.
         name: apache2
+        # 'name' specifies the service to be managed, which is 'apache2'.
         state: started
+        # 'state: started' ensures that the service is started.
         enabled: yes
+        # 'enabled: yes' ensures that the service starts automatically
+        # at boot.
+
     - name: Copy Files
+      # Another task to copy files to the target hosts.
       copy:
+        # 'copy' is a module used to copy files.
         src: index.html
+        # 'src' specifies the source file (on the Ansible control machine).
         dest: /var/www/html/index.html
-- name: Setup DB server
-  hosts: dbsrvgrp
-  become: yes
-  tasks:
-    - name: Install MySQL server
-      apt:
-        name: mariadb-server
-        state: present
-    - name: Start & Enable mariadb service
-      service:
-        name: mariadb
-        state: started
-        enabled: yes
+        # 'dest' specifies the destination path on the target hosts.
+        # In this case, it's copying 'index.html' to the Apache web server's
+        # default document root.
+        
+
